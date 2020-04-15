@@ -1,0 +1,21 @@
+# ##############################################################################
+
+# iCEcube PCF
+
+# Version:            2017.08.27940
+
+# File Generated:     Apr 15 2020 01:03:31
+
+# Family & Device:    iCE40UP5K
+
+# Package:            SG48
+
+# ##############################################################################
+
+###IOSet List 5
+set_io pwm[1] 19 -io_std SB_LVCMOS -pullup no
+set_io clk_12m 35 -io_std SB_LVCMOS -pullup no
+set_io pwm[0] 18 -io_std SB_LVCMOS -pullup no
+set_io pwm[2] 20 -io_std SB_LVCMOS -pullup no
+set_io rxd 4 -io_std SB_LVCMOS -pullup yes -pullup_resistor 100K
+
