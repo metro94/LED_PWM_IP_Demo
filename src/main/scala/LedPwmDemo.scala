@@ -108,72 +108,6 @@ class SB_RGBA_DRV(current: Array[Int]) extends BlackBox {
     noIoPrefix()
 }
 
-class LedPwmTest extends Component {
-    val io = new Bundle {
-        val rxd   = in  Bool
-        val cs    = out Bool
-        val en    = out Bool
-        val blink = out Bool
-        val addr  = out Bits(8 bits)
-        val data  = out Bits(8 bits)
-    }
-
-    val uartCtrl = new UartCtrl()
-
-    val addr = Reg(Bits(8 bits)) init(0)
-    val data = Reg(Bits(8 bits)) init(0)
-    val writeEn = Bool
-    val blink = Reg(Bool) init(False)
-
-    io.cs := writeEn
-    io.en := writeEn
-    io.blink := blink
-    io.addr := addr
-    io.data := data
-
-    uartCtrl.io.config.setClockDivider(115200 Hz)
-    uartCtrl.io.config.frame.dataLength := 8-1
-    uartCtrl.io.config.frame.parity := UartParityType.NONE
-    uartCtrl.io.config.frame.stop := UartStopType.ONE
-    uartCtrl.io.uart.rxd := io.rxd
-
-    val fsm = new StateMachine {
-        val READ_ADDR = new State with EntryPoint
-        val READ_DATA = new State
-        val WRITE_PWM = new State
-
-        uartCtrl.io.read.ready := False
-        writeEn := False
-
-        READ_ADDR.whenIsActive {
-            uartCtrl.io.read.ready := True
-            when (uartCtrl.io.read.valid) {
-                addr := uartCtrl.io.read.payload
-                goto(READ_DATA)
-            }
-        }
-
-        READ_DATA.whenIsActive {
-            uartCtrl.io.read.ready := True
-            when (uartCtrl.io.read.valid) {
-                data := uartCtrl.io.read.payload
-                goto(WRITE_PWM)
-            }
-        }
-
-        WRITE_PWM.whenIsActive {
-            when (io.addr(7 downto 4) === B"4'b0000") {
-                writeEn := True
-            }.otherwise {
-                blink := io.data.orR
-            }
-            goto(READ_ADDR)
-        }
-    }
-
-    noIoPrefix()
-}
-
 class LedPwmDemo extends Component {
     val io = new Bundle {
         val rxd = in  Bool
@@ -252,6 +186,6 @@ object Main {
         SpinalConfig(
             mode = Verilog,
             defaultClockDomainFrequency = FixedFrequency(12 MHz)
-        ).generate(new LedPwmTest)
+        ).generate(new LedPwmDemo)
     }
 }

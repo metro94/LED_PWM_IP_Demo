@@ -4,7 +4,7 @@ LED PWM IP Demo for [iCESugar](https://github.com/wuxx/icesugar) (using iCE40UP5
 
 ## Introduction
 
-This demo use iCELink (embedded in iCESugar) to send commands, then to control RGB PWM IP. RGB PWM hard IP is embedded in iCE40 UltraPlus. You can refer [iCE40 LED Driver Usage Guide](http://www.latticesemi.com/view_document?document_id=50668) for more information.
+This demo use iCELink (embedded in iCESugar) to send commands, then to control RGB PWM IP. RGB PWM hard IP is embedded in iCE40 UltraPlus. You can refer to [iCE40 LED Driver Usage Guide](http://www.latticesemi.com/view_document?document_id=50668) for more information.
 
 Every command contains two bytes, the first one is address, and the second one is data. The baudrate is 115200.
 
@@ -21,7 +21,7 @@ For this demo, signal list is below.
 | pwm\[0:2\] | output | \[18:21\] | PWM signals, could be used to analysis |
 | rgb\[0:2\] | output | \[39:41\] | RGB LED (dedicated pins) |
 
-## Synthesis (except top level)
+## Generate synthesizable code
 
 Use SpinalHDL to generate Verilog file. Make sure sbt is installed.
 
@@ -33,7 +33,7 @@ After synthesis, *LedPwmDemo.v* is generated.
 
 You can modify *LedPwmDemo.scala* to adjust current sinks for LED.
 
-## Generate bitstream
+## Synthesis, P&R, and generate bitstream
 
 Use *LedPwmDemo.v*, *top.v* and *top.pcf* to generate bitstream.
 
@@ -53,4 +53,6 @@ PySerial
 Tkinter
 ```
 
-To run this demo, enter device path to device (`COMx` for Windows, and `/dev/ttyX` for \*nix), connect to iCELink, and click *LED ON*.
+To run this demo, enter device path to device (`COMx` for Windows, or `/dev/ttyX` for \*nix), connect to iCELink, and click *LED ON*.
+
+To adjust parameters, please refer to [iCE40 LED Driver Usage Guide](http://www.latticesemi.com/view_document?document_id=50668) for more information.
